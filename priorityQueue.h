@@ -1,29 +1,31 @@
-#ifndef DSPATH
-#define DSPATH
+#ifndef MST
+#define MST
 
 #include<iostream>
 #include<vector>
+#include<array>
 #include<tuple>
 
 using namespace std;
 
 #endif
 
-	// used to represent list of nodes, corresponding to a particular path
-	// and the total edge cost of that path
-class nodePath
+
+	// class to represent edges in spanning tree
+class nodeEdge
 {
 	public:
-		int edgeCountTotal;
-		vector<int> nodeList;
+		int node;
+		array<int, 2> edge;
+		int cost; // edge cost
 		
-		nodePath(int T = 0, vector<int> NL = vector<int>()):
-					edgeCountTotal(T), nodeList(NL) {}
+		nodeEdge(int N = 0, array<int, 2> A = array<int, 2>{0, 0}, int C = 0):
+												node(N), edge(A), cost(C) {}
 };
 
 class priorityQueue
 {
-	vector<nodePath> pqArray;
+	vector<nodeEdge> pqArray;
 	int size;
 	
 		// make subtree with root at given index priority queue compliant
@@ -39,25 +41,28 @@ class priorityQueue
     int right(int i) { return (2*i + 2); }
 	
 	public:
-		priorityQueue(int S = 0) { size = S; pqArray = vector<nodePath>(size); }
+		priorityQueue(int S = 0) { size = S; pqArray = vector<nodeEdge>(size); }
 	
 			// removes the top element of the queue
-		nodePath getMin(); 
+		nodeEdge getMin(); 
 
-			// does the queue contain the value queue element "QE"
+			// checks to see if the priority queue contains node <n> 
 			// if so return the index, if not return -1
 		int contains(int EC);
 		
 			// insert queue element "OE" into queue
-		void insert(nodePath QE);
+		void insert(nodeEdge QE);
+		
+			// Decreases value of key at index 'i' to new_val
+		void decreaseKey(int i, int new_val);
 		
 			// returns the top element of the queue.
-		nodePath top() { return pqArray[0]; }
+		nodeEdge top() { return pqArray[0]; }
 		
 			// returns the number of queue elements
 		int getSize() { return size; } 
 		
-		vector<nodePath> getQueContents();
+		vector<nodeEdge> getQueContents();
 		
 		bool isEmpty() { return size == 0 ? true: false; }
 		
@@ -69,4 +74,6 @@ class priorityQueue
 			pqArray.clear();
 			size = 0;
 		}
+		
+		void modVal(int idx, nodeEdge n) { pqArray[idx] = n; }
 };

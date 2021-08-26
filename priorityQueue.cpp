@@ -1,8 +1,8 @@
 #include "priorityQueue.h"
 
-void PQswap(nodePath& x, nodePath& y)
+void PQswap(nodeEdge& x, nodeEdge& y)
 {
-    nodePath temp = x;
+    nodeEdge temp = x;
     x = y;
     y = temp;
 }
@@ -14,10 +14,10 @@ void priorityQueue::heapify(int i)
 	int r = right(i);
 	int smallest = i;
 	
-	if (l < size && pqArray[l].edgeCountTotal < pqArray[i].edgeCountTotal)
+	if (l < size && pqArray[l].cost < pqArray[i].cost)
     	smallest = l;
 
-	if (r < size && pqArray[r].edgeCountTotal < pqArray[smallest].edgeCountTotal)
+	if (r < size && pqArray[r].cost < pqArray[smallest].cost)
     	smallest = r;
 
 	if (smallest != i)
@@ -28,12 +28,12 @@ void priorityQueue::heapify(int i)
 }
 
 	// removes the top element of the queue
-nodePath priorityQueue::getMin()
+nodeEdge priorityQueue::getMin()
 {
 	if (size <= 0)
-    	return nodePath(0, vector<int>{-1});
+    	return nodeEdge(-1, array<int, 2>{-1, -1}, -1);
 
-	nodePath root;
+	nodeEdge root;
 
 	if (size == 1)
 	{
@@ -58,23 +58,21 @@ nodePath priorityQueue::getMin()
 	return root;
 }
 
-
-	// does the queue contain the value queue element "QE"
+	// checks to see if the priority queue contains node <n> 
 	// if so return the index, if not return -1
-int priorityQueue::contains(int EC)
+int priorityQueue::contains(int n)
 {
 	for(int i = 0; i < size; i++)
 	{
-		if (pqArray[i].edgeCountTotal == EC)
+		if (pqArray[i].node == n)
 			return i;
 	}
 	
 	return -1;
 }
 
-
 	// insert queue element "OE" into queue
-void priorityQueue::insert(nodePath QE)
+void priorityQueue::insert(nodeEdge QE)
 {
 	size++;
 	int i = size - 1;
@@ -82,16 +80,29 @@ void priorityQueue::insert(nodePath QE)
 	pqArray.push_back(QE);
 	
 		// make priority queue compliant
-    while (i != 0 && pqArray[parent(i)].edgeCountTotal > pqArray[i].edgeCountTotal)
+    while (i != 0 && pqArray[parent(i)].cost > pqArray[i].cost)
     {
        PQswap(pqArray[i], pqArray[parent(i)]);
        i = parent(i);
     }
 }
 
-vector<nodePath> priorityQueue::getQueContents()
+	// Decreases value of key at index 'i' to new_val
+void priorityQueue::decreaseKey(int i, int new_val)
 {
-	vector<nodePath> elements;
+	pqArray[i].cost = new_val;
+	
+		// make priority queue compliant
+	while (i != 0 && pqArray[parent(i)].cost > pqArray[i].cost)
+	{
+	swap(pqArray[i], pqArray[parent(i)]);
+	i = parent(i);
+	}
+}
+
+vector<nodeEdge> priorityQueue::getQueContents()
+{
+	vector<nodeEdge> elements;
 	
 	for(auto& E: pqArray)
 		elements.push_back(E);

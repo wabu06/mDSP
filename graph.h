@@ -1,8 +1,9 @@
-#ifndef DSPATH
-#define DSPATH
+#ifndef MST
+#define MST
 
 #include<iostream>
 #include<vector>
+#include<array>
 #include<tuple>
 
 using namespace std;
@@ -55,7 +56,9 @@ class graph
 		
 		graph( vector<int> vrtx );
 		
-		graph( vectOfTuples vrtx );
+		graph(int vrtx, vectOfTuples EG);
+		
+		graph(vectOfTuples EG);
 		
 			// add a vertex to the graph
 		//void addVertex() 
@@ -93,9 +96,6 @@ class graph
 			// get edge weight/distance from x to y,
 			// if there is no edge return -1
 		int getEdgeValue(int x, int y);
-		
-			// set edge weight/distance between x & y
-		//bool setEdgeValue(int x, int y, int v = 1);
 		
 			// get the average path length of all the nodes connected to
 			// node "n"

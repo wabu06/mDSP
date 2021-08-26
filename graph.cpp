@@ -63,17 +63,46 @@ graph::graph( vector<int> vrtx )
 	}
 }
 
-graph::graph( vectOfTuples vrtx )
+graph::graph(int vrtx, vectOfTuples EG)
 {
 	size = 0;
 	
-	for(auto& V: vrtx)
+	vertices = vector< vertexElem >();
+	
+	for(int i = 0; i < vrtx; ++i)
 	{
-		vertices.push_back( vertexElem( get<0>(V) ) ); size++;
-		vertices.push_back( vertexElem( get<1>(V) ) ); size++;
-		
-		addEdge( get<0>(V), get<1>(V), get<2>(V) );
+		vertices.push_back( vertexElem(i) );
+		++size;
 	}
+	
+	for(auto& e: EG)
+		addEdge( get<0>(e), get<1>(e), get<2>(e) );
+}
+
+graph::graph(vectOfTuples EG)
+{
+	size = 0;
+	
+	vertices = vector< vertexElem >();
+	
+	for(auto& e: EG)
+	{
+		if ( !nodeFound( get<0>(e) ) )
+		{
+			vertices.push_back( vertexElem( get<0>(e) ) );
+			++size;
+		}
+		
+		if ( !nodeFound( get<1>(e) ) )
+		{
+			vertices.push_back( vertexElem( get<1>(e) ) );
+			++size;
+		}
+		
+		addEdge( get<0>(e), get<1>(e), get<2>(e) );
+	}
+	
+	//cout << "size: " << size << endl;
 }
 
 	// total edge count
@@ -245,37 +274,6 @@ int graph::getEdgeValue(int x, int y)
 	else
 		return -1;
 }
-
-	// set edge weight/distance between x & y
-/* bool graph::setEdgeValue(int x, int y, int v)
-{
-	if ( isAdjacent(x, y) && isAdjacent(y, x) )
-	{
-		for(auto& E: vertices[x])
-		{
-			if (E.vertex == y)
-			{
-				E.weight = v;
-				break;
-			}
-		}
-		
-		for(auto& E: vertices[y])
-		{
-			if (E.vertex == x)
-			{
-				E.weight = v;
-				return true;
-			}
-		}
-		
-		return true; // suppresses compiler warning
-	}
-	else
-		return false;
-}
- */
- 
 
 
 	// get the average path length of all the nodes connected to node "n"
