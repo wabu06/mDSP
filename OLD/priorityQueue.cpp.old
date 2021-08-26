@@ -1,0 +1,109 @@
+#include "priorityQueue.h"
+
+void PQswap(int& x, int& y)
+{
+    int temp = x;
+    x = y;
+    y = temp;
+}
+
+	// make subtree with root at given index priority queue compliant
+void priorityQueue::heapify(int i)
+{
+	int l = left(i);
+	int r = right(i);
+	int smallest = i;
+	
+	if (l < size && pqArray[l] < pqArray[i])
+    	smallest = l;
+
+	if (r < size && pqArray[r] < pqArray[smallest])
+    	smallest = r;
+
+	if (smallest != i)
+	{
+    	PQswap(pqArray[i], pqArray[smallest]);
+    	heapify(smallest);
+	}
+}
+
+
+	// change the priority of node at index "i" to the priority "p"
+/* void priorityQueue::chgPriority(int i, int p)
+{ 
+	pqArray[i] = p;
+	
+	while (i != 0 && pqArray[parent(i)] > pqArray[i])
+    {
+       PQswap(pqArray[i], pqArray[parent(i)]);
+       i = parent(i);
+    }
+}
+ */
+
+	// removes the top element of the queue
+int priorityQueue::getMin()
+{
+	if (size <= 0)
+    	return -1;
+
+	if (size == 1)
+	{
+    	size--;
+    	return pqArray[0];
+	}
+	
+	int root = pqArray[0];
+	
+	pqArray[0] = pqArray[size-1];
+	
+	size--;
+	
+	heapify(0);
+	
+	pqArray.pop_back();
+	
+	return root;
+}
+
+
+	// does the queue contain the value queue element "QE"
+	// if so return the index, if not return -1
+int priorityQueue::contains(int QE)
+{
+	for(int i = 0; i < size; i++)
+	{
+		if (pqArray[i] == QE)
+			return i;
+	}
+	
+	return -1;
+}
+
+
+	// insert queue element "OE" into queue
+void priorityQueue::insert(int QE)
+{
+	size++;
+	int i = size - 1;
+	
+	pqArray.push_back(QE);
+	
+		// make priority queue compliant
+    while (i != 0 && pqArray[parent(i)] > pqArray[i])
+    {
+       PQswap(pqArray[i], pqArray[parent(i)]);
+       i = parent(i);
+    }
+}
+
+vector<int> priorityQueue::getElements()
+{
+	vector<int> elements;
+	
+	for(auto& E: pqArray)
+		elements.push_back(E);
+	
+	return elements;
+}
+

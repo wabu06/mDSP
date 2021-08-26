@@ -1,0 +1,46 @@
+#ifndef DSPATH
+#define DSPATH
+
+#include<iostream>
+#include<vector>
+
+#include "graph.h"
+#include "priorityQueue.h"
+
+using namespace std;
+
+#endif
+
+
+
+class nodeEdgeVal
+{
+	public:
+		int edgeVal; // total edge value of a series of linked nodes
+		vector<int> nodeArray;
+		
+		nodeEdgeVal(int V = 0, vector<int> A = vector<int>()):
+			edgeVal(v), nodeArray(A) {}
+};
+
+
+class dsPath
+{
+	priorityQueue openSet;
+	graph spGraph;
+	vector<nodeEdgeVal> closedSet;
+	
+	public:
+		dsPath(graph G = graph(),
+				priorityQueue OS = priorityQueue(),
+				vector<nodeEdgeVal> CS = vector<nodeEdgeVal>() ): 
+				spGraph(G), openSet(OS), closedSet(S) {}
+					
+		 	// find shortest path between from node u to node w and returns the
+		 	// sequence of vertices representing shortest path between them
+		vector<int> path( int u, int w);
+		
+			// returns the path cost associated with the shortest path between
+			// nodes u and w 
+		int pathSize(int u, int w);
+};

@@ -1,0 +1,89 @@
+#include "shortestPath.h"
+
+
+
+nodePath dsPath::getNodePath( int sN, int dN)
+{
+	if( !( spGraph.nodeFound(sN) && spGraph.nodeFound(dN) ) )
+		return nodePath(0, vector<int>{-1});
+	
+	if (sN == dN)
+		return nodePath(0, vector<int>{dN});
+		
+	openSet.insert( nodePath(0, vector<int>{sN}) );
+	
+	nodePath np = openSet.getMin();
+		
+	closedSet.push_back(np);
+	
+	int cn, ev, tempEV;
+	
+	vector<int> tempNP;
+	
+	nodePath LP; // last path added to closed set
+	
+	int minEC;
+	
+	nodePath minNP(-1, vector<int>{-1});
+	
+	do {
+		cn = np.nodeList.back(); // current node to be examined
+		
+		for(auto& N: spGraph.getNeighbors( cn ) )
+		{
+			if (cn == N)
+				continue;
+			
+			tempEV = np.edgeCountTotal;
+			tempNP = np.nodeList;
+		
+			ev = spGraph.getEdgeValue(cn, N);
+			
+			tempEV += ev;
+			
+			tempNP.push_back(N);
+			
+			minEC = numeric_limits<int>::max();
+			
+				// check to see if current path to current neighbor is better
+				// than one that's already in the open set
+			for(auto& C: openSet.getQueContents() )
+			{
+				if (N == C.nodeList.back())
+				{
+					if (C.edgeCountTotal < minEC)
+					{
+						minEC = C.edgeCountTotal;
+						minNP = C;
+					}
+				}
+			}
+				// only add path to open set if it's better than one that is
+				// already in open set
+			if(minNP.edgeCountTotal > 0)
+			{
+				if (tempEV >= minNP.edgeCountTotal)
+					continue;
+			}
+		
+			openSet.insert( nodePath(tempEV, tempNP) );
+		}
+		
+		np = openSet.getMin(); // get shortest path currently in open set
+		
+		//cout << "OS size:\t" << openSet.getSize() << endl;
+		
+		closedSet.push_back(np);
+
+		LP = closedSet.back(); // get most recent path added to closed set
+		
+			// if final node in the most recent path added to closed set is 
+			// "dN", the destination node, then shortest path has been found
+		if ( LP.nodeList.back() == dN )
+			return LP;
+	
+	} while( openSet.notEmpty() );
+	
+		// return empty path list if node "dN" is not reachable from node "sN"
+	return nodePath(0, vector<int>{-1});
+}

@@ -1,0 +1,173 @@
+#include "graph.h"
+
+
+	// constuctor overloaded to create graph by specifying size, edge density,
+	// and distance range:
+	// S = size, density = edge density, maxd = distance range
+graph::graph(int S, double density, int maxd)
+{
+	srand( time(nullptr) );
+	
+	size = S;
+	
+	vertices = vector< vector<edge> >(size);
+	
+	int i = 0;
+	
+	int d; // edge distance
+	
+	for(auto& V: vertices)
+	{
+		for(int j = i; j < size; j++)
+		{
+			if (j != i)
+			{
+				if (prob() < density)
+				{
+					d = getDistance(maxd);
+					V.push_back( edge(j,d) );
+					vertices[j].push_back( edge(i,d) );
+				}
+			}
+		}
+
+		i++;
+	}
+}
+
+	// total edge count
+int graph::getEdges()
+{
+	int count = 0;
+	
+	for(int i = 0; i < size; i++)
+	{
+		for(auto& E: vertices[i])
+		{
+			if(E.vertex > i)
+				count++;
+		}
+	}
+	
+	return count;
+}
+
+	// returns true if there's an edge from node x to y
+bool graph::isAdjacent(int x, int y)
+{
+	for(auto& E: vertices[x])
+	{
+		if(E.vertex == y)
+			return true;	
+	}
+	
+	return false;
+}
+
+	// get all vertices connected to x
+vector<int> graph::getNeighbors(int x)
+{
+	vector<int> neighbors;
+	
+	for(auto& V: vertices[x])
+		neighbors.push_back(V.vertex);
+	
+	return neighbors;
+}
+
+	// adds edge between x & y, if one is currently nonexistent
+	// returns true if edge was added, if not return false
+bool graph::addEdge(int x, int y, int d)
+{
+	if ( isAdjacent(x, y) && isAdjacent(y, x) )
+		return false;
+	else
+	{
+		vertices[x].push_back( edge(y, d) );
+		vertices[y].push_back( edge(x, d) );
+		return true;
+	}	
+}
+
+	// if there's an edge between x & y, delete it and return true
+	// else return false
+bool graph::deleteEdge(int x, int y)
+{
+	if ( isAdjacent(x, y) && isAdjacent(y, x) )
+	{
+		for (auto it = vertices[x].begin(); it != vertices[x].end(); it++)
+		{
+			if (it->vertex == y)
+			{
+				vertices[x].erase(it);
+				break;
+			}
+		}
+		
+		for (auto it = vertices[y].begin(); it != vertices[y].end(); it++)
+		{
+			if (it->vertex == x)
+			{
+				vertices[y].erase(it);
+				break;
+			}
+		}
+		
+		return true;
+	}
+	else
+		return false;
+}
+
+
+	// get edge weight/distance from x to y, if there is no edge return -1
+int graph::getEdgeValue(int x, int y)
+{
+	for(auto& V: vertices[x])
+	{
+		if (V.vertex == y)
+			return V.weight;
+	}
+	
+	return -1;
+}
+
+	// set edge weight/distance between x & y
+bool graph::setEdgeValue(int x, int y, int v)
+{
+	if ( isAdjacent(x, y) && isAdjacent(y, x) )
+	{
+		for(auto& E: vertices[x])
+		{
+			if (E.vertex == y)
+			{
+				E.weight = v;
+				break;
+			}
+		}
+		
+		for(auto& E: vertices[y])
+		{
+			if (E.vertex == x)
+			{
+				E.weight = v;
+				return true;
+			}
+		}
+		
+		return true; // suppresses compiler warning
+	}
+	else
+		return false;
+}
+
+	// get the average path length of all the nodes from node "n"
+double graph::avePathLength(int n)
+{
+	double total = 0;
+	
+	for(auto& E: vertices[n])
+		total += static_cast<double>(E.weight);
+	
+	return total / static_cast<double>( vertices[n].size() );
+}
