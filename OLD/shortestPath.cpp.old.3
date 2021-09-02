@@ -9,6 +9,13 @@ nodePath dsPath::getNodePath( int sN, int dN)
 	
 	if (sN == dN)
 		return nodePath(0, vector<int>{dN});
+	
+		// initialize open and closed sets, to empty
+	openSet.emptyPQ();
+	closedSet.clear();
+	
+		//initialize nodes visited tracker
+	nodesVisited.clear();
 		
 	openSet.insert( nodePath(0, vector<int>{sN}) );
 	
@@ -21,8 +28,6 @@ nodePath dsPath::getNodePath( int sN, int dN)
 	vector<int> tempNP;
 	
 	nodePath LP; // last path added to closed set
-	
-	bool doNotAdd = false;
 	
 	do {
 		cn = np.nodeList.back(); // current node to be examined
@@ -37,33 +42,30 @@ nodePath dsPath::getNodePath( int sN, int dN)
 		
 			ev = spGraph.getEdgeValue(cn, N);
 			
+			//cout << ev << endl;
+			
 			tempEV += ev;
 			
 			tempNP.push_back(N);
 			
-				// check to see if current path to current neighbor is better
-				// than one that's already in the open set
-			for(auto& C: openSet.getQueContents() )
+				// add new path to open set if the node is leads to isn't
+				// already ready visited, if it's already been visited, add it
+				// only if it's better path than one already checked/found
+			if (nodesVisited[N] == 0)
 			{
-				if (N == C.nodeList.back())
+				openSet.insert( nodePath(tempEV, tempNP) );
+				nodesVisited[N] = tempEV;
+			}
+			else
+			{
+				if (tempEV < nodesVisited[N])
 				{
-					if ( tempEV >= C.edgeCountTotal )
-					{
-						doNotAdd = true;
-						break;
-					}
+					openSet.insert( nodePath(tempEV, tempNP) );
+					nodesVisited[N] = tempEV;
 				}
 			}
-			
-				// only add path to open set if it's better than one that is
-				// already in open set
-			if (doNotAdd)
-			{
-				doNotAdd = false;
-				continue;
-			}
-			
-			openSet.insert( nodePath(tempEV, tempNP) );
+
+			//openSet.insert( nodePath(tempEV, tempNP) );
 		}
 		
 		np = openSet.getMin(); // get shortest path currently in open set
@@ -73,6 +75,8 @@ nodePath dsPath::getNodePath( int sN, int dN)
 		closedSet.push_back(np);
 
 		LP = closedSet.back(); // get most recent path added to closed set
+		
+		//cout << "ECT:\t" << LP.edgeCountTotal << endl;
 		
 			// if final node in the most recent path added to closed set is 
 			// "dN", the destination node, then shortest path has been found

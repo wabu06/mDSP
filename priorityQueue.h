@@ -74,5 +74,8 @@ class priorityQueue
 			size = 0;
 		}
 		
-		void modVal(int idx, nodePath n) { pqArray[idx] = n; }
+			// modify the element at index i of PQ array
+		void modVal(int i, nodePath n) { pqArray[i] = n; }
+		
+		nodePath getNodePath(int i) { return pqArray[i]; }
 };
