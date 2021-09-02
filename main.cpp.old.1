@@ -17,16 +17,16 @@ int main(int argc, char** argv)
 	cout << endl;
 	
 		// instance of dsPath class initialized with graph G3
-	dsPath gSP(G3); 
+	dsPath g3SP(G3); 
 	
-	auto p7to29 = gSP.getPath(7, 29);
+	auto p7to29 = g3SP.getPath(7, 29);
 	
 	cout << "\nG3 path 7->29:\t";
 	
 	for(auto& N: p7to29)
 		cout << N << '\t';
 		
-	cout << "\nG3 7->29 distance: " << gSP.getPathSize(7, 29) << endl;
+	cout << "\nG3 7->29 distance: " << g3SP.getPathSize(7, 29) << endl;
 	
 	cout << "\nEdge value between nodes 7 & 29 in graph G3:\t";
 	
@@ -45,16 +45,16 @@ int main(int argc, char** argv)
 	//graph G2(50, 0.2, 10);
 	
 		// instance of dsPath class initialized with graph G2
-	gSP = dsPath(G2);
+	dsPath g2SP(G2);
 	
-	auto p15to41 = gSP.getPath(15, 41);
+	auto p15to41 = g2SP.getPath(15, 41);
 	
 	cout << "\nG2 path 15->41:\t";
 	
 	for(auto& N: p15to41)
 		cout << N << '\t';
 		
-	cout << "\nG2 15->41 distance: " << gSP.getPathSize(15, 41) << endl;
+	cout << "\nG2 15->41 distance: " << g2SP.getPathSize(15, 41) << endl;
 	
 	cout << "\nEdge value between nodes 15 & 41 in graph G2:\t";
 	
