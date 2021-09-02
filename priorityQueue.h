@@ -1,9 +1,8 @@
-#ifndef MST
-#define MST
+#ifndef DSPATH
+#define DSPATH
 
 #include<iostream>
 #include<vector>
-#include<array>
 #include<tuple>
 
 using namespace std;
@@ -11,21 +10,21 @@ using namespace std;
 #endif
 
 
-	// class to represent edges in spanning tree
-class nodeEdge
+	// the "nodePath" class used to represent a list of nodes, corresponding
+	// to a particular path and the total edge cost of that path
+class nodePath
 {
 	public:
-		int node;
-		array<int, 2> edge;
-		int cost; // edge cost
-		
-		nodeEdge(int N = 0, array<int, 2> A = array<int, 2>{0, 0}, int C = 0):
-												node(N), edge(A), cost(C) {}
+	int ect; // edge count total of a given node path
+	vector<int> nodeList;
+
+	nodePath(int T = 0, vector<int> NL = vector<int>()):
+				ect(T), nodeList(NL) {}
 };
 
 class priorityQueue
 {
-	vector<nodeEdge> pqArray;
+	vector<nodePath> pqArray;
 	int size;
 	
 		// make subtree with root at given index priority queue compliant
@@ -41,28 +40,28 @@ class priorityQueue
     int right(int i) { return (2*i + 2); }
 	
 	public:
-		priorityQueue(int S = 0) { size = S; pqArray = vector<nodeEdge>(size); }
+		priorityQueue(int S = 0) { size = S; pqArray = vector<nodePath>(size); }
 	
 			// removes the top element of the queue
-		nodeEdge getMin(); 
+		nodePath getMin(); 
 
 			// checks to see if the priority queue contains node <n> 
 			// if so return the index, if not return -1
 		int contains(int EC);
 		
-			// insert queue element "OE" into queue
-		void insert(nodeEdge QE);
+			// insert node path "np" into queue
+		void insert(nodePath np);
 		
 			// Decreases value of key at index 'i' to new_val
 		void decreaseKey(int i, int new_val);
 		
 			// returns the top element of the queue.
-		nodeEdge top() { return pqArray[0]; }
+		nodePath top() { return pqArray[0]; }
 		
 			// returns the number of queue elements
 		int getSize() { return size; } 
 		
-		vector<nodeEdge> getQueContents();
+		vector<nodePath> getQueContents();
 		
 		bool isEmpty() { return size == 0 ? true: false; }
 		
@@ -75,5 +74,5 @@ class priorityQueue
 			size = 0;
 		}
 		
-		void modVal(int idx, nodeEdge n) { pqArray[idx] = n; }
+		void modVal(int idx, nodePath n) { pqArray[idx] = n; }
 };

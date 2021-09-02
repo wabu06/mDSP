@@ -1,8 +1,8 @@
 #include "priorityQueue.h"
 
-void PQswap(nodeEdge& x, nodeEdge& y)
+void PQswap(nodePath& x, nodePath& y)
 {
-    nodeEdge temp = x;
+    nodePath temp = x;
     x = y;
     y = temp;
 }
@@ -14,10 +14,10 @@ void priorityQueue::heapify(int i)
 	int r = right(i);
 	int smallest = i;
 	
-	if (l < size && pqArray[l].cost < pqArray[i].cost)
+	if (l < size && pqArray[l].ect < pqArray[i].ect)
     	smallest = l;
 
-	if (r < size && pqArray[r].cost < pqArray[smallest].cost)
+	if (r < size && pqArray[r].ect < pqArray[smallest].ect)
     	smallest = r;
 
 	if (smallest != i)
@@ -28,12 +28,12 @@ void priorityQueue::heapify(int i)
 }
 
 	// removes the top element of the queue
-nodeEdge priorityQueue::getMin()
+nodePath priorityQueue::getMin()
 {
 	if (size <= 0)
-    	return nodeEdge(-1, array<int, 2>{-1, -1}, -1);
+    	return nodePath(-1);
 
-	nodeEdge root;
+	nodePath root;
 
 	if (size == 1)
 	{
@@ -64,23 +64,23 @@ int priorityQueue::contains(int n)
 {
 	for(int i = 0; i < size; i++)
 	{
-		if (pqArray[i].node == n)
+		if (pqArray[i].nodeList.back() == n)
 			return i;
 	}
 	
 	return -1;
 }
 
-	// insert queue element "OE" into queue
-void priorityQueue::insert(nodeEdge QE)
+	// insert node path "np" into queue
+void priorityQueue::insert(nodePath np)
 {
 	size++;
 	int i = size - 1;
 	
-	pqArray.push_back(QE);
+	pqArray.push_back(np);
 	
 		// make priority queue compliant
-    while (i != 0 && pqArray[parent(i)].cost > pqArray[i].cost)
+    while (i != 0 && pqArray[parent(i)].ect > pqArray[i].ect)
     {
        PQswap(pqArray[i], pqArray[parent(i)]);
        i = parent(i);
@@ -90,19 +90,19 @@ void priorityQueue::insert(nodeEdge QE)
 	// Decreases value of key at index 'i' to new_val
 void priorityQueue::decreaseKey(int i, int new_val)
 {
-	pqArray[i].cost = new_val;
+	pqArray[i].ect = new_val;
 	
 		// make priority queue compliant
-	while (i != 0 && pqArray[parent(i)].cost > pqArray[i].cost)
+	while (i != 0 && pqArray[parent(i)].ect > pqArray[i].ect)
 	{
-	swap(pqArray[i], pqArray[parent(i)]);
-	i = parent(i);
+		PQswap(pqArray[i], pqArray[parent(i)]);
+		i = parent(i);
 	}
 }
 
-vector<nodeEdge> priorityQueue::getQueContents()
+vector<nodePath> priorityQueue::getQueContents()
 {
-	vector<nodeEdge> elements;
+	vector<nodePath> elements;
 	
 	for(auto& E: pqArray)
 		elements.push_back(E);

@@ -1,9 +1,8 @@
-#ifndef MST
-#define MST
+#ifndef DSPATH
+#define DSPATH
 
 #include<iostream>
 #include<vector>
-#include<array>
 #include<tuple>
 
 using namespace std;
