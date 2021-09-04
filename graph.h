@@ -13,6 +13,8 @@ using namespace std;
 
 enum class eCLR {NONE, RED, YLLW, GRN}; // edge color
 
+ostream& operator<<(ostream& out, eCLR c);
+
 class edge
 {
 	public:
@@ -91,7 +93,7 @@ class graph
 		
 			// adds edge between x & y, if one is currently nonexistent
 			// returns true if edge was added, if not return false
-		bool addEdge(int x, int y, int d = 1);
+		bool addEdge(int x, int y, int d, eCLR c = eCLR::GRN);
 		
 			// if there's an edge between x & y, delete it and return true
 			// else return false

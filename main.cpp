@@ -36,6 +36,8 @@ int main(int argc, char** argv)
 	cout << "\ngraph G3 node <1> Average Path Length: " << G3.avePathLength(1);
 	cout << endl;
 	
+	cout << "G3 7 & 29 color: " << G3.getEdgeColor(7, 29) << endl;
+	
 	cout << "\n\n\nNeighbors of node 15 in graph G2:" << endl;
 
 	for(auto& N: G2.getNeighbors(15) )
@@ -91,7 +93,7 @@ int main(int argc, char** argv)
 	
 	fin.close();
 
-	gSP = dsPath{ graph(edgeW) }; gSP.setColor(eCLR::GRN, false);
+	gSP = dsPath{ graph(edgeW) }; gSP.setColor(eCLR::YLLW, false);
 	
 	auto p3to17 = gSP.getPath(3, 17);
 	
