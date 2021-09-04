@@ -63,6 +63,9 @@ nodePath dsPath::getNodePath( int sN, int dN)
 
 		for(auto& N: nodeNeighbors)
 		{
+			if( !cMap[ spGraph.getEdgeColor(cn, N) ] )
+				continue;
+			
 			if( nodeInClosedSet(N) )
 				continue;
 			

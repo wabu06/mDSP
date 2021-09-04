@@ -275,6 +275,28 @@ int graph::getEdgeValue(int x, int y)
 		return -1;
 }
 
+eCLR graph::getEdgeColor(int x, int y)
+{
+	auto xptr = nodeExist(x);
+	auto yptr = nodeExist(y);
+	
+	bool xfound = xptr != static_cast< vertElemItr >(nullptr) ? true: false;
+	bool yfound = yptr != static_cast< vertElemItr >(nullptr) ? true: false;
+	
+	if ( xfound  && yfound )
+	{
+		for(auto& V: xptr->edgeList)
+		{
+			if (V.vertex == y)
+				return V.color;
+		}
+		
+		return eCLR::NONE;
+	}
+	else
+		return eCLR::NONE;
+}
+
 
 	// get the average path length of all the nodes connected to node "n"
 double graph::avePathLength(int n)

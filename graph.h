@@ -10,13 +10,18 @@ using namespace std;
 #endif
 
 
+
+enum class eCLR {NONE, RED, YLLW, GRN}; // edge color
+
 class edge
 {
 	public:
 		int vertex; // vertex endpoint of an edge
 		int weight; // edge weight (distance)
+		eCLR color;
 		
-		edge(int V = 1, int W = 0): vertex(V), weight(W) {}
+		edge(int V = 1, int W = 0, eCLR C = eCLR::GRN):
+								vertex(V), weight(W), color(C) {}
 };
 
 	// encapsulates the info for a particular vertex
@@ -99,4 +104,6 @@ class graph
 			// get the average path length of all the nodes connected to
 			// node "n"
 		double avePathLength(int n);
+		
+		eCLR getEdgeColor(int x, int y);
 };

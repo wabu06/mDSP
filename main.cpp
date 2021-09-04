@@ -1,3 +1,4 @@
+#include<fstream>
 #include "shortestPath.h"
 
 
@@ -62,6 +63,52 @@ int main(int argc, char** argv)
 	
 	cout << "\ngraph G2 node <1> Average Path Length: " << G2.avePathLength(1);
 	cout << endl;
+	
+	ifstream fin("graph.dat"); // open file and connect it to a stream
+	
+	if ( fin.bad() )
+	{
+		cerr << "Error opening file!!" << endl;
+		return 1;
+	}
+	
+	int gsize; // node count
+	
+	fin >> gsize; // read in from the file the node count
+	
+	int v1, v2, w; // node pairs and their edge cost
+	
+	vectOfTuples edgeW; // vector to store the edges and their costs
+	
+		// read in from the file the edges and the cost associated with each
+		// edge, and store that into a vector
+	while( fin.good() )
+	{
+		fin >> v1 >> v2 >> w;
 		
+		edgeW.push_back( intTup{v1, v2, w} );
+	}
+	
+	fin.close();
+
+	gSP = dsPath{ graph(edgeW) }; gSP.setColor(eCLR::GRN, false);
+	
+	auto p3to17 = gSP.getPath(3, 17);
+	
+	cout << "\ngraph from file path 3->17:\t";
+	
+	for(auto& N: p3to17)
+		cout << N << '\t';
+		
+	cout << "\ngraph from file 3->17 distance: " << gSP.getPathSize(3, 17);
+	cout << endl;
+	
+	//cout << "\nEdge value between nodes 3 & 17 in graph from file:\t";
+	
+	//cout << G2.getEdgeValue(3, 17) << '\t' << G2.getEdgeValue(17, 3) << endl;
+	
+	//cout << "\ngraph G2 node <1> Average Path Length: " << G2.avePathLength(1);
+	//cout << endl;
+	
 	return 0;
 }
