@@ -56,7 +56,7 @@ graph::graph(int S, double density, int maxd)
 	
 	vertices = vector< vertexElem >(size);
 	
-	int vID = 1;
+	int vID = 0;
 	
 	for(auto& V: vertices)
 	{
@@ -77,7 +77,7 @@ graph::graph(int S, double density, int maxd)
 				{
 					d = getDistance(maxd);
 					
-					addEdge(i+1, j+1, d, getColor() );
+					addEdge(i, j, d, getColor() );
 				} 
 			}
 		}
