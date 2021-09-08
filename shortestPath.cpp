@@ -17,7 +17,7 @@ nodePath dsPath::getNodePath( int sN, int dN)
 {
 		// what to return if either source or destination nodes are not in the
 		// graph
-	if( !( spGraph.nodeFound(sN) && spGraph.nodeFound(dN) ) )
+	if( !( spGraph.nodeExist(sN) && spGraph.nodeExist(dN) ) )
 		return nodePath( -1, vector<int>() );
 	
 		// what to return if source and destination nodes are equal
@@ -59,7 +59,7 @@ nodePath dsPath::getNodePath( int sN, int dN)
 			// if a node has no neighbors then there isn't a path to the 
 			// destination node "dN"
 		if (nodeNeighbors.size() == 0)
-			return nodePath( -1, vector<int>() );
+			return nodePath( -2, vector<int>() );
 
 		for(auto& N: nodeNeighbors)
 		{
@@ -108,5 +108,5 @@ nodePath dsPath::getNodePath( int sN, int dN)
 	}
 	
 		// return empty path list if node "dN" is not reachable from node "sN"
-	return nodePath( -1, vector<int>() );
+	return nodePath( -3, vector<int>() );
 }
