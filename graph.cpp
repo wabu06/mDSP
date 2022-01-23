@@ -68,7 +68,7 @@ graph::graph(int S, double density, int maxd)
 		{
 			if (j != i)
 			{
-				if (prob() < density)
+				if (prob() <= density)
 				{
 					d = getDistance(maxd);
 					c = getColor();

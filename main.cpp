@@ -5,15 +5,20 @@
 
 int main(int argc, char** argv)
 {
-	graph G1(100, 0.579, 33), G2(50, 0.2, 10), G3(50, 0.4, 10);
+	graph G1(100, 0.579, 33), G2(500, 0.2, 50), G3(50, 0.4, 10);
 	graph G4(35, 0.64, 18);
 		
 	cout << boolalpha;
 
-	cout << "Neighbors of node 7 in graph G3:" << endl;
-
+	cout << "Neighbors of node 7 in graph G3:" << endl; int c{1};
+	
 	for(auto& N: G3.getNeighbors(7) )
-		cout << N << "\t";
+	{
+		if (c == 15)
+			{ cout << N << "\n"; c = 1; }
+		else
+			{ cout << N << "\t"; ++c; }
+	}
 	
 	cout << endl;
 	
@@ -36,7 +41,8 @@ int main(int argc, char** argv)
 	cout << "\ngraph G3 node <1> Average Path Length: " << G3.avePathLength(1);
 	cout << endl;
 	
-	cout << "G3 7 & 29 color: " << G3.getEdgeColor(7, 29) << endl;
+	cout << "G3 7 & 29 color: " << G3.getEdgeColor(7, 29) << '\t';
+	cout << G3.getEdgeColor(29, 7) <<endl;
 	
 	cout << "\n\n\nNeighbors of node 15 in graph G2:" << endl;
 
